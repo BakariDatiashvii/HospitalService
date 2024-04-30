@@ -1,6 +1,7 @@
 ﻿using HospitalService.Command.CommandModels.AuthCommandModels;
 using HospitalService.Domain.Contracts;
 using HospitalService.Domain.Entities.Categories;
+using HospitalService.Domain.Entities.CategoryDoctors;
 using HospitalService.Domain.Entities.Doctors;
 using HospitalService.Domain.Entities.Users;
 using HospitalService.Domain.Service;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Azure.Core.HttpHeader;
 
 namespace HospitalService.Command.CommandModels.Commands.AuthCommand
 {
@@ -88,16 +90,129 @@ namespace HospitalService.Command.CommandModels.Commands.AuthCommand
                     photo = POTO,
                     cv = CV,
 
-                    Category = new Category()
-                    {
-                        Name = _model.categoryname
-                    }
 
-                }
+
+                },
+
 
 
 
             };
+
+           
+
+
+            List<string> categoryDoctorName = new List<string> ()
+            {
+             "\"ანდროლოგი\"",
+             "\"ანესთეზიოლოგი\"",
+             "\"კარდიოლოგი\"",
+             "\"ჯოსმეტოლოგი\"",
+             "\"ლაბორანტი\"",
+             "\"ოჯახისექიმი\"",
+              "\"პედიატრი\"",
+              "\"ტოქსიკოლოგი\"",
+              "\"ტრანსფუზილოგი\"",
+              "\"გინეკოლოგი\"",
+              "\"დერმატოლოგი\"",
+              "\"ენდოკრინოლოგი\"",
+              "\"გასტროენტეროლოგი\"",
+              "\"თერაპევტი\""
+
+            };
+
+           
+
+            if (_model.categoryname.Count > 0)
+            {
+                for (int i = 0; i < _model.categoryname.Count; i++)
+                {
+                    
+                    for (int y = i +1; y < _model.categoryname.Count; y++)
+                    {
+                        if (_model.categoryname[i] == _model.categoryname[y])
+                        {
+                            return Result.Error("pizdec EMTXVEVA");
+                        }
+                    }
+                }
+            }
+
+
+            var T = 0;
+
+            foreach (var x in _model.categoryname) 
+            {
+                T = 0;
+                foreach (var y in categoryDoctorName)
+                {
+                   if (x == y)
+                    {
+                        T++;
+                    }
+                }
+
+                if (T == 0)
+                {
+                    return Result.Error("PIZDECI");
+                }
+            }
+
+
+            _repositoryProvider.Users.Create(User);
+            _repositoryProvider.Doctors.Create(User.Doctor);
+    
+
+
+
+
+            foreach (var x in _model.categoryname)
+            {
+                var z =  _repositoryProvider.Categorys.GetQueryable().FirstOrDefault(z => z.Name == x.Trim());
+                var doctorCategory = new CategoryDoctor();
+                if (z != null)
+                {
+                    doctorCategory.CategoryId = z.Id;
+                    doctorCategory.Category = z;
+
+                    
+
+                    doctorCategory.DoctorId = User.Doctor.Id;
+                    _repositoryProvider.Categorys.Update(z);
+                  
+
+                  
+
+                    _repositoryProvider.CategoryDoctors.Create(doctorCategory);
+                 
+
+
+                }
+                else
+                {
+                    var category = new Category();
+                    
+
+
+                    category.Name = x;
+
+                    _repositoryProvider.Categorys.Create(category);
+
+                    doctorCategory.DoctorId = User.Doctor.Id;
+                    doctorCategory.CategoryId = category.Id;
+                    doctorCategory.Category = category;
+                    doctorCategory.Doctor = User.Doctor;
+
+                    _repositoryProvider.CategoryDoctors.Create(doctorCategory);
+
+                }
+
+               
+
+
+            }
+            
+
 
 
 
@@ -106,7 +221,7 @@ namespace HospitalService.Command.CommandModels.Commands.AuthCommand
 
             var token = _authorizedUserService.GenerateToken(User);
 
-            _repositoryProvider.Users.Create(User);
+         
             _repositoryProvider.UnitOfWork.SaveChange();
 
             return Result.Success((object)token);

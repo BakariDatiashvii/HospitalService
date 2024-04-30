@@ -1,4 +1,5 @@
-﻿using HospitalService.Domain.Entities.Persons;
+﻿using HospitalService.Domain.Entities.Doctors;
+using HospitalService.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,9 @@ namespace HospitalService.Infrastructure.Database.Mapping
 
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Id).ValueGeneratedNever();
-            entity.Property(x => x.ActivateCode).HasMaxLength(20).IsRequired();
+            entity.Property(x => x.ActivateCode).HasMaxLength(20);
+            entity.Property(x=> x.VerifyUser).IsRequired();
+            entity.HasOne(x => x.User).WithOne(x => x.Person).HasForeignKey<Person>(x => x.UserId);
         }
     }
 }

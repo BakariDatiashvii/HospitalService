@@ -3,7 +3,11 @@ using HospitalService.Domain.Contracts.Repositories;
 using HospitalService.Infrastructure;
 using HospitalService.Infrastructure.Database;
 using HospitalService.Infrastructure.Repories;
+using HospitalService.Shared.EmailServices;
+using HospitalService.Shared.EmailServices.EmailContracts;
+using HospitalService.Shared.EmailServices.EmailDomaines.EmailModels;
 using HospitalService.WebApi.Extenstions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -13,13 +17,18 @@ builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddJwtAndExternalAuthentication(builder.Configuration);
 builder.Services.AddDbContext<HospitalDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("HospitalDbContext")));
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
+
+
+builder.Services.AddSingleton<IMailService, MailService>();
 builder.Services.AddScoped<RepositoryProvider>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<ICategoryRepository, Categorypository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICategoryDoctorRepository, CategoryDoctorRepository>();
 
 
 builder.Services.AddSwaggerGen(option =>
@@ -68,6 +77,12 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.UseCors(options =>
+{
+    options.AllowAnyHeader();
+    options.AllowAnyMethod();
+    options.AllowAnyOrigin();
+});
 
 app.MapControllers();
 

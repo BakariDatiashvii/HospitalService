@@ -22,6 +22,6 @@ namespace HospitalService.Command.CommandModels.AuthCommandModels
         public IFormFile photo { get; set; }
         public IFormFile cv { get; set; }
 
-        public string categoryname { get; set; }
+        public List<string> categoryname { get; set; }
     }
 }

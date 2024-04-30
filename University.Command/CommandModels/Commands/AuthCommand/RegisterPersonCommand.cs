@@ -1,17 +1,11 @@
 ﻿using HospitalService.Command.CommandModels.AuthCommandModels;
 using HospitalService.Domain.Contracts;
-using HospitalService.Domain.Entities.Persons;
 using HospitalService.Domain.Entities.Users;
 using HospitalService.Domain.Service;
 using HospitalService.Infrastructure;
 using HospitalService.Shared.Enumes;
 using HospitalService.Shared.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HospitalService.Command.CommandModels.Commands.AuthCommand
 {
@@ -30,16 +24,7 @@ namespace HospitalService.Command.CommandModels.Commands.AuthCommand
         {
 
 
-            var similarUser = await _repositoryProvider.Users.GetQueryable()
-                .FirstOrDefaultAsync(x => x.Email == _model.Email);
-
-
-
-            if (similarUser != null)
-            {
-                return Result.Error("მსგავსი მეილით მომხმარებელი უკვე არსებობს");
-            }
-
+            
 
             byte[] passwordHash;
             byte[] passwordSalt;
@@ -55,6 +40,26 @@ namespace HospitalService.Command.CommandModels.Commands.AuthCommand
 
             authService.CreatePasswordHash(_model.Password, out passwordHash, out passwordSalt);
 
+
+            var pers = await _repositoryProvider.Persons.GetQueryable().FirstOrDefaultAsync(x => x.ActivateCode == _model.ActivateCode && x.VerifyUser == false);
+            if (pers == null)
+            {
+                return Result.Error("pizdec");
+            }
+
+            if ( pers.ActivateCode != _model.ActivateCode)
+            {
+                return Result.Error("კოდი არასწორია");
+
+            }
+
+            pers.VerifyUser = true;
+            pers.ActivateCode = null;
+           
+
+
+
+
             var User = new User()
             {
                 Email = _model.Email,
@@ -64,16 +69,23 @@ namespace HospitalService.Command.CommandModels.Commands.AuthCommand
                 FirstName = _model.FirstName,
                 LastName = _model.LastName,
                 PrivateNumber = _model.PrivateNumber,
-                Person = new Person()
-                {
-                    ActivateCode = _model.ActivateCode
-                }
+
+                PersonId = pers.Id
+
+            
+                
 
 
             };
 
-            var token = _authorizedUserService.GenerateToken(User);
+            
+            
 
+
+
+
+            var token = _authorizedUserService.GenerateToken(User);
+            _repositoryProvider.Persons.Update(pers);
             _repositoryProvider.Users.Create(User);
             _repositoryProvider.UnitOfWork.SaveChange();
 

@@ -25,7 +25,6 @@ namespace HospitalService.Infrastructure.Migrations
             modelBuilder.Entity("HospitalService.Domain.Entities.Categories.Category", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
@@ -35,20 +34,44 @@ namespace HospitalService.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categorys");
+                    b.ToTable("Category", "category");
+                });
+
+            modelBuilder.Entity("HospitalService.Domain.Entities.CategoryDoctors.CategoryDoctor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DoctorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("CategoryDoctor", "CategoryDoctor");
                 });
 
             modelBuilder.Entity("HospitalService.Domain.Entities.Doctors.Doctor", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoryID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
@@ -58,26 +81,26 @@ namespace HospitalService.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<byte[]>("cv")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("photo")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryID");
-
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctor", "doctor");
                 });
 
-            modelBuilder.Entity("HospitalService.Domain.Entities.Persons.Person", b =>
+            modelBuilder.Entity("HospitalService.Domain.Entities.Doctors.Person", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ActivateCode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ActivateCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -85,9 +108,15 @@ namespace HospitalService.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("VerifyUser")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Persons");
+                    b.ToTable("Person", "person");
                 });
 
             modelBuilder.Entity("HospitalService.Domain.Entities.Users.User", b =>
@@ -151,28 +180,36 @@ namespace HospitalService.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d406dbf6-9728-41a4-bbb6-2dbd57696a9e"),
-                            CreatedDate = new DateTime(2024, 3, 22, 23, 45, 26, 447, DateTimeKind.Local).AddTicks(3724),
+                            Id = new Guid("3cf459f1-6eb1-40f7-bc7c-26aa2ba61e36"),
+                            CreatedDate = new DateTime(2024, 5, 2, 20, 5, 33, 569, DateTimeKind.Local).AddTicks(7578),
                             Email = "1",
                             FirstName = "admin",
                             IsDeleted = false,
                             LastName = "admin",
-                            PasswordHash = new byte[] { 73, 174, 121, 19, 239, 92, 184, 77, 199, 190, 193, 20, 24, 50, 59, 4, 244, 153, 30, 199, 113, 198, 39, 65, 226, 89, 178, 183, 158, 23, 104, 238, 105, 164, 223, 86, 238, 235, 168, 169, 147, 227, 17, 207, 75, 25, 213, 72, 86, 155, 10, 85, 221, 188, 112, 224, 33, 129, 185, 0, 83, 30, 171, 91 },
-                            PasswordSalt = new byte[] { 31, 76, 61, 87, 220, 144, 237, 117, 163, 93, 210, 2, 167, 220, 118, 65, 127, 129, 141, 183, 195, 82, 113, 16, 192, 168, 109, 131, 43, 216, 66, 173, 176, 71, 187, 39, 107, 12, 99, 210, 23, 75, 154, 238, 174, 48, 159, 206, 81, 87, 69, 177, 22, 45, 103, 94, 82, 114, 240, 225, 16, 45, 84, 205, 13, 184, 70, 219, 17, 54, 124, 91, 241, 3, 127, 29, 136, 135, 6, 40, 146, 49, 58, 249, 204, 178, 116, 90, 130, 124, 201, 67, 5, 194, 218, 151, 220, 62, 242, 86, 183, 105, 31, 52, 38, 161, 43, 232, 162, 91, 158, 165, 98, 154, 16, 225, 61, 79, 242, 35, 157, 240, 215, 157, 232, 167, 94, 154 },
+                            PasswordHash = new byte[] { 167, 84, 220, 197, 156, 122, 130, 47, 51, 251, 112, 57, 189, 170, 131, 225, 194, 86, 49, 222, 87, 189, 110, 19, 252, 199, 184, 125, 166, 149, 140, 178, 137, 185, 110, 148, 128, 245, 199, 95, 185, 30, 213, 170, 5, 129, 126, 232, 61, 51, 205, 239, 6, 156, 23, 56, 116, 142, 57, 80, 107, 225, 228, 82 },
+                            PasswordSalt = new byte[] { 125, 108, 96, 205, 111, 116, 77, 135, 2, 110, 255, 243, 202, 143, 175, 192, 33, 111, 112, 78, 196, 100, 47, 223, 143, 225, 198, 85, 7, 40, 9, 206, 91, 119, 185, 86, 80, 13, 94, 159, 229, 86, 191, 159, 55, 231, 164, 5, 151, 102, 202, 247, 203, 114, 148, 157, 225, 106, 228, 161, 25, 134, 227, 134, 165, 27, 154, 194, 33, 149, 15, 197, 17, 15, 252, 19, 78, 2, 210, 78, 184, 178, 200, 221, 164, 89, 178, 106, 50, 61, 169, 16, 182, 243, 81, 108, 243, 55, 88, 36, 87, 29, 84, 147, 61, 212, 227, 245, 69, 157, 36, 23, 249, 114, 146, 216, 63, 155, 122, 214, 25, 85, 167, 77, 170, 56, 18, 11 },
                             PrivateNumber = "admin",
                             Role = 0
                         });
                 });
 
-            modelBuilder.Entity("HospitalService.Domain.Entities.Doctors.Doctor", b =>
+            modelBuilder.Entity("HospitalService.Domain.Entities.CategoryDoctors.CategoryDoctor", b =>
                 {
                     b.HasOne("HospitalService.Domain.Entities.Categories.Category", "Category")
-                        .WithMany("Doctors")
-                        .HasForeignKey("CategoryID")
+                        .WithMany("doctors")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HospitalService.Domain.Entities.Doctors.Doctor", "Doctor")
+                        .WithMany("Categories")
+                        .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("HospitalService.Domain.Entities.Users.User", b =>
@@ -182,7 +219,7 @@ namespace HospitalService.Infrastructure.Migrations
                         .HasForeignKey("HospitalService.Domain.Entities.Users.User", "DoctorId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("HospitalService.Domain.Entities.Persons.Person", "Person")
+                    b.HasOne("HospitalService.Domain.Entities.Doctors.Person", "Person")
                         .WithOne("User")
                         .HasForeignKey("HospitalService.Domain.Entities.Users.User", "PersonId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -194,15 +231,17 @@ namespace HospitalService.Infrastructure.Migrations
 
             modelBuilder.Entity("HospitalService.Domain.Entities.Categories.Category", b =>
                 {
-                    b.Navigation("Doctors");
+                    b.Navigation("doctors");
                 });
 
             modelBuilder.Entity("HospitalService.Domain.Entities.Doctors.Doctor", b =>
                 {
+                    b.Navigation("Categories");
+
                     b.Navigation("user");
                 });
 
-            modelBuilder.Entity("HospitalService.Domain.Entities.Persons.Person", b =>
+            modelBuilder.Entity("HospitalService.Domain.Entities.Doctors.Person", b =>
                 {
                     b.Navigation("User");
                 });

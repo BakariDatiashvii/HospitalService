@@ -24,8 +24,8 @@ namespace HospitalService.Infrastructure.Database.Mapping
             entity.Property(x => x.Email).HasMaxLength(50).IsRequired();
             entity.Property(x => x.PrivateNumber).HasMaxLength(50).IsRequired();
 
-
             entity.HasOne(x => x.Person).WithOne(x => x.User).HasForeignKey<User>(x => x.PersonId);
+
             entity.HasOne(x => x.Doctor).WithOne(x => x.user).HasForeignKey<User>(x => x.DoctorId);
 
         }

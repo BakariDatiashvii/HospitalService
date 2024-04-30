@@ -16,19 +16,23 @@ namespace HospitalService.Infrastructure
         public IPersonRepository Persons { get; }
         public IUserRepository Users { get; }
 
+        public ICategoryDoctorRepository CategoryDoctors { get; }
+
 
 
         public RepositoryProvider(IUnitOfWork unitOfWork,
             IPersonRepository person,
             IDoctorRepository doctor,
             ICategoryRepository category,
-            IUserRepository user)
+            IUserRepository user,
+            ICategoryDoctorRepository categoryDoctorRepository)
         {
             UnitOfWork = unitOfWork;
             Doctors = doctor;
             Categorys = category;
             Persons = person;
             Users = user;
+            CategoryDoctors = categoryDoctorRepository;
         }
     }
 }

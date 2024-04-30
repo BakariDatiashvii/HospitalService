@@ -1,5 +1,5 @@
 ﻿using HospitalService.Domain.Contracts.Repositories;
-using HospitalService.Domain.Entities.Persons;
+using HospitalService.Domain.Entities.Doctors;
 using HospitalService.Infrastructure.Database;
 using HospitalService.Infrastructure.Repories.Base;
 using System;

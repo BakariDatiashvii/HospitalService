@@ -1,6 +1,8 @@
 ﻿using HospitalService.Domain.Contracts;
 using HospitalService.Infrastructure;
+using HospitalService.Shared.EmailServices.EmailContracts;
 using HospitalService.Shared.Models;
+
 using SimpleSoft.Mediator;
 
 namespace HospitalService.Command
@@ -9,6 +11,11 @@ namespace HospitalService.Command
     {
         protected RepositoryProvider _repositoryProvider { get; }
         protected IAuthorizedUserService _authorizedUserService { get; }
+
+       
+
+
+
 
         public CommandBase(RepositoryProvider repositoryProvider)
         {

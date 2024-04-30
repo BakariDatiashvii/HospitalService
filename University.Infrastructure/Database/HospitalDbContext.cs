@@ -1,6 +1,6 @@
 ﻿using HospitalService.Domain.Entities.Categories;
+using HospitalService.Domain.Entities.CategoryDoctors;
 using HospitalService.Domain.Entities.Doctors;
-using HospitalService.Domain.Entities.Persons;
 using HospitalService.Domain.Entities.Users;
 using HospitalService.Infrastructure.Database.Initsializers;
 using HospitalService.Infrastructure.Database.Mapping;
@@ -21,6 +21,8 @@ namespace HospitalService.Infrastructure.Database
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categorys { get; set; }
 
+        public DbSet<CategoryDoctor> CategoryDoctors { get; set; }
+
 
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> context) : base(context)
@@ -31,11 +33,11 @@ namespace HospitalService.Infrastructure.Database
         {
 
 
-            //modelBuilder.ConfigureCategory();
-            //modelBuilder.ConfigureDoctor();
-            //modelBuilder.ConfigurePerson();
+            modelBuilder.ConfigureCategory();
+            modelBuilder.ConfigureDoctor();
+            modelBuilder.ConfigurePerson();
             modelBuilder.ConfigureUser();
-
+            modelBuilder.ConfigureCategoryDoctor();
 
             modelBuilder.InitializeUser();
 

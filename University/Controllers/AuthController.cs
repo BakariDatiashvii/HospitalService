@@ -2,8 +2,10 @@
 using HospitalService.Command.CommandModels.Commands.AuthCommand;
 using HospitalService.Domain.Contracts;
 using HospitalService.Infrastructure;
+using HospitalService.Shared.EmailServices.EmailContracts;
 using HospitalService.Shared.Enumes;
 using HospitalService.WebApi.Service;
+using MailKit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalService.WebApi.Controllers
@@ -12,8 +14,31 @@ namespace HospitalService.WebApi.Controllers
     [Route(nameof(AuthController))]
     public class AuthController : BaseController
     {
-        public AuthController(RepositoryProvider repositoryProvider, IAuthorizedUserService authorizedUserService) : base(repositoryProvider, authorizedUserService)
+        private readonly Shared.EmailServices.EmailContracts.IMailService _mailService;
+        public AuthController(
+            RepositoryProvider repositoryProvider,
+            IAuthorizedUserService authorizedUserService,
+            Shared.EmailServices.EmailContracts.IMailService mailService) : base(repositoryProvider, authorizedUserService)
         {
+            _mailService = mailService;
+        }
+
+
+        [HttpPost("seendCode")]
+        public async Task<IActionResult> VertifyEmailAndSendValidateCode(VertifyEmailAndSendValidateCodeCommandModel model)
+        {
+            var command = new VertifyEmailAndSendValidateCodeCommand(_repositoryProvider, _authorizedUserService, _mailService ,model );
+
+            return Ok(await command.HandleAsync());
+        }
+
+
+        [HttpPost("CHangePasswordSendCode")]
+        public async Task<IActionResult> CHangePasswordSendCode(ChangePasswordEmailSendValidateCodeCommandModel model)
+        {
+            var command = new ChangePasswordEmailSendValidateCodeCommand(_repositoryProvider, _authorizedUserService, _mailService, model);
+
+            return Ok(await command.HandleAsync());
         }
 
         [HttpPost("Person-registration")]
@@ -25,7 +50,7 @@ namespace HospitalService.WebApi.Controllers
         }
 
 
-        [Authorize(Role.Admin)]
+      
 
         [HttpPost("Doctor-registration")]
         public async Task<IActionResult> DoctorRegistration([FromForm] RegistrationDoctorCommandModel model)
@@ -37,9 +62,17 @@ namespace HospitalService.WebApi.Controllers
 
 
         [HttpPost("login")]
-        public async Task<IActionResult> login([FromForm] LoginUserCommandModel model)
+        public async Task<IActionResult> login([FromBody] LoginUserCommandModel model)
         {
             var command = new LoginUserCommand(_repositoryProvider, _authorizedUserService, model);
+
+            return Ok(await command.HandleAsync());
+        }
+
+        [HttpPost("UpdateMaailPassword")]
+        public async Task<IActionResult> UpdateMaailPassword([FromForm] ChangePasswordCommandModel model)
+        {
+            var command = new ChangePasswordCommand(_repositoryProvider, _authorizedUserService, model);
 
             return Ok(await command.HandleAsync());
         }
