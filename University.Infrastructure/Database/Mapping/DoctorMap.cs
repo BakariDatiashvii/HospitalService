@@ -21,7 +21,7 @@ namespace HospitalService.Infrastructure.Database.Mapping
             entity.Property(x => x.photo).IsRequired();
             entity.Property(x => x.cv).IsRequired();
 
-            entity.HasOne(x => x.Category).WithMany(x => x.Doctors).HasForeignKey(x => x.CategoryID);
+            //entity.HasOne(x => x.Category).WithMany(x => x.Doctors).HasForeignKey(x => x.CategoryID);
 
         }
     }

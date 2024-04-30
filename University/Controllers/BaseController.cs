@@ -1,5 +1,6 @@
 ﻿using HospitalService.Domain.Contracts;
 using HospitalService.Infrastructure;
+using HospitalService.Shared.EmailServices.EmailContracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalService.WebApi.Controllers
@@ -8,6 +9,8 @@ namespace HospitalService.WebApi.Controllers
     {
         protected RepositoryProvider _repositoryProvider;
         protected IAuthorizedUserService _authorizedUserService;
+      
+
 
         public BaseController(RepositoryProvider repositoryProvider)
         {
@@ -18,6 +21,7 @@ namespace HospitalService.WebApi.Controllers
         {
             _repositoryProvider = repositoryProvider;
             _authorizedUserService = authorizedUserService;
+           
         }
     }
 }

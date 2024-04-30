@@ -10,4 +10,8 @@
     <ProjectReference Include="..\University.Shared\HospitalService.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\Persons\" />
+  </ItemGroup>
+
 </Project>

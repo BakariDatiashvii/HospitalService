@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace HospitalService.Command.CommandModels.Commands.AuthCommand
 {
@@ -41,7 +42,17 @@ namespace HospitalService.Command.CommandModels.Commands.AuthCommand
 
             var token = _authorizedUserService.GenerateToken(user);
 
-            return Result.Success((object)token);
+            var X = new AuthResponseDto()
+            {
+                Token = token,
+                Message = "warmatebit shevida",
+                IsSuccess = true
+
+            };
+
+            return Result.Success(X);
+
+
         }
     }
 }

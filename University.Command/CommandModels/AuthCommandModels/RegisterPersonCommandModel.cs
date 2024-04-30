@@ -16,8 +16,11 @@ namespace HospitalService.Command.CommandModels.AuthCommandModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        
         public string PrivateNumber { get; set; }
 
-        public string ActivateCode { get; set; }
+     
+
+        public int ActivateCode { get; set; }
     }
 }

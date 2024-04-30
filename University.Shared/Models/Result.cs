@@ -5,6 +5,7 @@
         public string Message { get; set; }
 
         public object Response { get; set; }
+        public bool IsSuccess { get; set; }
 
         public ResultStatus Status { get; set; } = ResultStatus.Success;
 
@@ -23,6 +24,16 @@
             return new Result(ResultStatus.Success, responce);
         }
 
+        public static Result Success(AuthResponseDto dto)
+        {
+            return new Result(dto);
+        }
+
+        public static Result Success(bool isSuccess)
+        {
+            return new Result(isSuccess);
+        }
+
         public static Result Error(string message)
         {
             return new Result(message, ResultStatus.Error);
@@ -38,8 +49,17 @@
             return new Result(message, ResultStatus.Unauthorized);
         }
 
-        public Result()
+        public Result(bool   isSuccess )
         {
+            IsSuccess = isSuccess;
+        }
+
+        public Result(AuthResponseDto dto)
+        {
+            Message = dto.Message;
+            IsSuccess = dto.IsSuccess;
+            Response = dto.Token;
+           
         }
 
         public Result(ResultStatus status)

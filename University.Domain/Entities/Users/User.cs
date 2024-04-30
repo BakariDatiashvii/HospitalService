@@ -1,6 +1,5 @@
 ﻿using HospitalService.Domain.Core;
 using HospitalService.Domain.Entities.Doctors;
-using HospitalService.Domain.Entities.Persons;
 using HospitalService.Shared.Enumes;
 using System;
 using System.Collections.Generic;
@@ -21,8 +20,8 @@ namespace HospitalService.Domain.Entities.Users
 
         public string PrivateNumber { get; set; }
 
-        public Guid? PersonId { get; set; }
-        public Person Person { get; set; }
+        public Guid?  PersonId { get; set; }
+        public Person  Person { get; set; }
 
         public Guid? DoctorId { get; set; }
         public Doctor Doctor { get; set; }
