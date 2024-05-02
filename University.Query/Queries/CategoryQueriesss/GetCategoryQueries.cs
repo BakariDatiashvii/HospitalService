@@ -1,13 +1,7 @@
-﻿using HospitalService.Domain.Contracts;
-using HospitalService.Infrastructure;
+﻿using HospitalService.Infrastructure;
 using HospitalService.Query.ViewModels.CategoryVm;
 using HospitalService.Shared.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HospitalService.Query.Queries.CategoryQueriesss
 {
