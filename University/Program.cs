@@ -29,6 +29,7 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 builder.Services.AddScoped<ICategoryRepository, Categorypository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICategoryDoctorRepository, CategoryDoctorRepository>();
+builder.Services.AddScoped<ICalendaryRepository, CalendaryReposition>();
 
 
 builder.Services.AddSwaggerGen(option =>

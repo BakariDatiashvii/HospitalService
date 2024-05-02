@@ -1,4 +1,4 @@
-﻿using HospitalService.Domain.Entities.Doctors;
+﻿using HospitalService.Domain.Entities.Persons;
 using HospitalService.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using System;

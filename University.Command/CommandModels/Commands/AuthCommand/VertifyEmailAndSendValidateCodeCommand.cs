@@ -1,7 +1,7 @@
 ﻿using HospitalService.Command.CommandModels.AuthCommandModels;
 using HospitalService.Domain.Contracts;
 using HospitalService.Domain.Entities.Doctors;
-
+using HospitalService.Domain.Entities.Persons;
 using HospitalService.Domain.Entities.Users;
 using HospitalService.Infrastructure;
 using HospitalService.Shared.EmailServices;

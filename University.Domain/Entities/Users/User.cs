@@ -1,5 +1,6 @@
 ﻿using HospitalService.Domain.Core;
 using HospitalService.Domain.Entities.Doctors;
+using HospitalService.Domain.Entities.Persons;
 using HospitalService.Shared.Enumes;
 using System;
 using System.Collections.Generic;

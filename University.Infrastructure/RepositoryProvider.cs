@@ -18,6 +18,8 @@ namespace HospitalService.Infrastructure
 
         public ICategoryDoctorRepository CategoryDoctors { get; }
 
+        public ICalendaryRepository Calendarys { get; }
+
 
 
         public RepositoryProvider(IUnitOfWork unitOfWork,
@@ -25,7 +27,8 @@ namespace HospitalService.Infrastructure
             IDoctorRepository doctor,
             ICategoryRepository category,
             IUserRepository user,
-            ICategoryDoctorRepository categoryDoctorRepository)
+            ICategoryDoctorRepository categoryDoctorRepository,
+            ICalendaryRepository calendarys)
         {
             UnitOfWork = unitOfWork;
             Doctors = doctor;
@@ -33,6 +36,7 @@ namespace HospitalService.Infrastructure
             Persons = person;
             Users = user;
             CategoryDoctors = categoryDoctorRepository;
+            Calendarys = calendarys;
         }
     }
 }
