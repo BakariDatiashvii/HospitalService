@@ -38,6 +38,8 @@ namespace HospitalService.Query.Queries.GetDoctorWithCategoryAdmins
 
 
             string C = doctorandcategory.Doctor.user.FirstName;
+
+            //int x = 11;
             
             return Result.Success(VM);
              
