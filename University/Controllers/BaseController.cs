@@ -14,7 +14,7 @@ namespace HospitalService.WebApi.Controllers
 
         public BaseController(RepositoryProvider repositoryProvider)
         {
-            _repositoryProvider = repositoryProvider;
+            _repositoryProvider = repositoryProvider;  
         }
 
         public BaseController(RepositoryProvider repositoryProvider, IAuthorizedUserService authorizedUserService)
